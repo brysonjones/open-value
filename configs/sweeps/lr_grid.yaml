@@ -1,0 +1,17 @@
+# Sweep: Quick grid search over learning rates
+# Useful for narrowing down the LR range before a full Bayesian sweep
+#
+# Usage:
+#   python -m open_value_estimator.sweep \
+#       config=configs/config.yaml \
+#       sweep_config=configs/sweeps/lr_grid.yaml \
+#       count=45
+
+method: grid
+metric:
+  name: loss
+  goal: minimize
+
+parameters:
+  data.fail_penalty:
+    values: [30, 100, 300, 500]

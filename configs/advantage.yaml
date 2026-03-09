@@ -1,0 +1,29 @@
+# Offline advantage dataset generation config.
+#
+# Usage:
+#   uv run python -m open_value_estimator.advantage \
+#     config=configs/advantage.yaml \
+#     advantage.checkpoint=outputs/open_value_estimator/my_run/checkpoint_4000.safetensors
+
+data:
+  repo_id: full_ft_dataset_w_rewards_no_force
+  root: ./data/full_ft_dataset_w_rewards_no_force
+  batch_size: 128
+  num_workers: 8
+  drop_n_last_frames: 0
+  shuffle: false
+  fail_penalty: 300.0
+  precomputed_rewards: false
+  augment_images: false
+
+advantage:
+  checkpoint: null
+  use_ema: true
+  mode: n_step
+  n_step: 50
+  batch_size: 128
+  output_repo_id: null
+  output_root: null
+  stats_quantiles: [0.01, 0.10, 0.50, 0.90, 0.99]
+
+device: cuda

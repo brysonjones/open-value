@@ -1,0 +1,74 @@
+# Open Value Estimator Configuration
+
+# Model configuration
+model:
+  model_name: google/siglip-base-patch16-224
+  num_cameras: 4
+  hidden_dim: 768
+  num_bins: 201    # Distributional value head bins
+  v_min: -1.0      # Min value for distribution
+  v_max: 0.0       # Max value for distribution
+  vlm_model_name: google/gemma-3-270m  # Base Gemma model (not instruction-tuned, matching Pi0.5)
+  freeze_vision_encoder: true  # Freeze SigLIP vision encoder (Pi0.5-style)
+  value_head_depth: 2  # Number of hidden layers in value head MLP (1 = single layer)
+
+# Data configuration
+data:
+  repo_id: full_ft_dataset_w_rewards_no_force
+  root: ./data/full_ft_dataset_w_rewards_no_force
+  batch_size: 128
+  num_workers: 8
+  drop_n_last_frames: 0
+  shuffle: true
+  fail_penalty: 300.0  # Large negative constant for failure at episode end (terminal reward mode only)
+  precomputed_rewards: false  # If true, use per-step rewards from dataset directly (skip reward shaping)
+  augment_images: true  # Random crop, rotation, color jitter during training
+
+# Training configuration
+training:
+  learning_rate: 3e-4
+  weight_decay: 0.01
+  adam_beta1: 0.9
+  adam_beta2: 0.95   
+  num_steps: 15000
+  warmup_steps: 1000   # Linear warmup, then cosine decay to 0
+  log_freq: 10
+  save_freq: 400
+  eval_freq: 400      # Run evaluation every N steps (0 to disable)
+  grad_clip_norm: 1.0
+  ema_decay: 0.999     # EMA decay rate for eval weights (0 to disable)
+  resume_from: null     # Path to checkpoint for resuming training (loads optimizer/scheduler)
+  pretrained: null      # Path to checkpoint for loading weights only
+
+# Weights & Biases configuration
+wandb:
+  project: open-value-estimator
+  name: null  # Uses output_dir name if null
+
+# Evaluation visualization configuration
+eval:
+  show_ground_truth_reward: true  # Show ground-truth target overlay in eval plots
+
+# Cloud deployment configuration
+cloud:
+  gcp:
+    project_id: adjoint-app
+    bucket: gs://adjoint_exp_usc1
+    mount_prefix: /gcs/adjoint_exp_usc1
+    region: us-central1
+    container: us-docker.pkg.dev/adjoint-app/experiment-images/representation-learning-research:v1
+  modal:
+    volume_name: adjoint_data
+
+# Accelerate configuration (for distributed/mixed precision training)
+accelerate:
+  enabled: true           # Set to true to use accelerate
+  num_processes: null        # Number of GPUs/processes
+  mixed_precision: "bf16"  # "no", "fp16", or "bf16"
+  gradient_accumulation_steps: 4  # Gradient accumulation (handled natively by Accelerator)
+
+# General settings
+output_dir: ./outputs/open_value_estimator
+run_name: null  # Required: set via CLI override or config
+seed: 17
+device: cuda
