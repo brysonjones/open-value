@@ -78,6 +78,7 @@ def test_config_from_dict_creates_nested_subconfigs(full_config_dict: dict) -> N
     assert cfg.model.hidden_dim == full_config_dict["model"]["hidden_dim"]
     assert cfg.advantage.mode == AdvantageMode.N_STEP
     assert cfg.eval.show_ground_truth_reward is False
+    assert cfg.eval.video_fps == 24.0
 
 
 def test_config_from_dict_uses_defaults_for_omitted_sections() -> None:
@@ -87,6 +88,7 @@ def test_config_from_dict_uses_defaults_for_omitted_sections() -> None:
     assert cfg.data == DataConfig()
     assert cfg.training == TrainingConfig()
     assert cfg.eval == EvalConfig()
+    assert cfg.eval.video_fps == 30.0
 
 
 def test_config_from_dict_rejects_unknown_model_key(full_config_dict: dict) -> None:
@@ -177,4 +179,3 @@ def test_load_model_config_from_checkpoint_missing_sidecar_raises(tmp_path, full
 
     with pytest.raises(FileNotFoundError, match="Model config not found"):
         load_model_config_from_checkpoint(cfg)
-

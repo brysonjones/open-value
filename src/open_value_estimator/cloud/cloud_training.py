@@ -274,6 +274,7 @@ def run_eval_gcp(config: dict):
     output_dir.mkdir(parents=True, exist_ok=True)
     batch_size = config.get("batch_size", 16)
     show_ground_truth_reward = config.get("show_ground_truth_reward", True)
+    video_fps = config.get("video_fps", 30.0)
 
     logger.info(f"Evaluating {len(episodes)} episodes: {episodes}")
     for ep_idx in episodes:
@@ -288,6 +289,7 @@ def run_eval_gcp(config: dict):
             batch_size=batch_size,
             camera_views=selected_camera_views,
             show_ground_truth_reward=show_ground_truth_reward,
+            video_fps=video_fps,
         )
 
     logger.info(f"Eval completed. Saved {len(episodes)} videos to {output_dir}")

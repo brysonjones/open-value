@@ -59,6 +59,7 @@ wandb:
 # Evaluation visualization configuration
 eval:
   show_ground_truth_reward: true  # Show ground-truth target overlay in eval plots
+  video_fps: 30.0  # FPS for saved evaluation videos and W&B playback
 
 # Accelerate configuration (for distributed/mixed precision training)
 accelerate:

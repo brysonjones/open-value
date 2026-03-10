@@ -25,4 +25,5 @@ eval:
   batch_size: 64
   use_ema: true
   show_ground_truth_reward: false
+  video_fps: 30.0
   output_dir: null

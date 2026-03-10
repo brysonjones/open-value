@@ -71,6 +71,7 @@ def full_config_dict(model_config_dict: dict) -> dict:
         },
         "eval": {
             "show_ground_truth_reward": False,
+            "video_fps": 24.0,
         },
         "accelerate": {
             "enabled": False,

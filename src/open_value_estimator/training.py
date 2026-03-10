@@ -378,7 +378,10 @@ def train(cfg: Config, accelerator: "Accelerator | None" = None):
             eval_model = ema_model if use_ema else (accelerator.unwrap_model(model) if accelerator else model)
             video_path = evaluate(eval_model, cfg, output_dir, step + 1, device, dataset=value_dataset)
             if use_wandb:
-                wandb.log({"eval_video": wandb.Video(str(video_path), fps=10, format="mp4")}, step=step + 1)
+                wandb.log(
+                    {"eval_video": wandb.Video(str(video_path), fps=cfg.eval.video_fps, format="mp4")},
+                    step=step + 1,
+                )
             model.train()  # Switch back to train mode
 
     # Final logging (only on main process)

@@ -76,6 +76,7 @@ def test_build_eval_config_uses_defaults_from_config(make_config_yaml, full_conf
     assert eval_config["camera_views"] == ["top", "wrist"]
     assert eval_config["use_ema"] is True
     assert eval_config["show_ground_truth_reward"] is False
+    assert eval_config["video_fps"] == 24.0
 
 
 def test_build_eval_config_applies_overrides_and_no_ema(make_config_yaml, full_config_dict: dict, gcp_settings: dict) -> None:
@@ -104,6 +105,7 @@ def test_build_eval_config_applies_overrides_and_no_ema(make_config_yaml, full_c
             "gpu": "h100",
             "batch_size": 64,
             "no_ema": True,
+            "video_fps": 60.0,
         },
     )
 
@@ -114,6 +116,7 @@ def test_build_eval_config_applies_overrides_and_no_ema(make_config_yaml, full_c
     assert eval_config["output_dir"] == "/gcs/test-bucket/custom_eval"
     assert eval_config["batch_size"] == 64
     assert eval_config["use_ema"] is False
+    assert eval_config["video_fps"] == 60.0
 
 
 def test_build_eval_config_requires_checkpoint(make_config_yaml, full_config_dict: dict, gcp_settings: dict) -> None:

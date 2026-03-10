@@ -28,7 +28,7 @@ from open_value_estimator.utils import preprocess_batch
 # Layout constants
 TARGET_WIDTH = 1000  # Target video width in pixels
 TITLE_HEIGHT = 50  # Height of title bar
-FPS = 10  # Output video framerate
+DEFAULT_VIDEO_FPS = 30.0  # Default output video framerate
 BG_COLOR = (30, 26, 46)  # Dark background color (BGR)
 
 # Computer Modern fonts (bundled with matplotlib)
@@ -736,6 +736,7 @@ def create_evaluation_video(
     num_workers: int = 4,
     camera_views: list[str] | None = None,
     show_ground_truth_reward: bool = True,
+    video_fps: float = DEFAULT_VIDEO_FPS,
 ) -> Path:
     """Create an evaluation video for an episode.
 
@@ -751,6 +752,7 @@ def create_evaluation_video(
             This only affects video output, not model inference inputs.
         show_ground_truth_reward: Whether to include the ground-truth target
             line in the rollout plot.
+        video_fps: Output frame rate for the saved video file.
 
     Returns:
         Path to the saved video file.
@@ -809,7 +811,7 @@ def create_evaluation_video(
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-    writer = cv2.VideoWriter(str(output_path), fourcc, FPS, (total_width, total_height))
+    writer = cv2.VideoWriter(str(output_path), fourcc, video_fps, (total_width, total_height))
 
     # Title bar spans full width
     task_display = task[:80] + "..." if len(task) > 80 else task
@@ -879,6 +881,7 @@ def evaluate(
         episode_idx=episode_idx,
         device=device,
         show_ground_truth_reward=cfg.eval.show_ground_truth_reward,
+        video_fps=cfg.eval.video_fps,
     )
 
 
@@ -924,6 +927,12 @@ def main() -> None:
         action="store_false",
         default=True,
         help="Hide the ground-truth target line from the rollout plot.",
+    )
+    parser.add_argument(
+        "--video-fps",
+        type=float,
+        default=DEFAULT_VIDEO_FPS,
+        help="FPS for the saved evaluation video.",
     )
     parser.add_argument("--no-ema", action="store_true", help="Skip EMA weights, use regular checkpoint.")
     args = parser.parse_args()
@@ -977,6 +986,7 @@ def main() -> None:
             batch_size=args.batch_size,
             camera_views=selected_camera_views,
             show_ground_truth_reward=args.show_ground_truth_reward,
+            video_fps=args.video_fps,
         )
 
     logging.info(f"Done. Saved {len(args.episodes)} videos to {output_dir}")

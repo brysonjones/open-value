@@ -79,6 +79,7 @@ def build_eval_config(
     batch_size = overrides.pop("batch_size", None)
     use_ema_override = overrides.pop("use_ema", None)
     show_ground_truth_reward_override = overrides.pop("show_ground_truth_reward", None)
+    video_fps_override = overrides.pop("video_fps", None)
     no_ema = overrides.pop("no_ema", None)
 
     episodes = _normalize_list_arg(overrides.pop("episodes", None), "episodes")
@@ -114,6 +115,12 @@ def build_eval_config(
             raise ValueError("show_ground_truth_reward must be true or false")
         show_ground_truth_reward = show_ground_truth_reward_override
 
+    video_fps = eval_defaults.get("video_fps", 30.0)
+    if video_fps_override is not None:
+        if not isinstance(video_fps_override, (int, float)):
+            raise ValueError("video_fps must be numeric")
+        video_fps = float(video_fps_override)
+
     if no_ema is not None:
         if not isinstance(no_ema, bool):
             raise ValueError("no_ema must be true or false")
@@ -143,6 +150,7 @@ def build_eval_config(
         "batch_size": batch_size,
         "use_ema": use_ema,
         "show_ground_truth_reward": show_ground_truth_reward,
+        "video_fps": video_fps,
         "camera_views": camera_views,
     }
     return eval_config, gpu

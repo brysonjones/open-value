@@ -125,6 +125,7 @@ class EvalConfig:
     """Evaluation visualization configuration."""
 
     show_ground_truth_reward: bool = True
+    video_fps: float = 30.0  # FPS for saved evaluation videos and W&B playback
 
 
 @dataclass
