@@ -80,7 +80,7 @@ This library expects a [LeRobot](https://github.com/huggingface/lerobot) dataset
 
 These fields are not recorded during standard LeRobot demonstrations. To label an existing dataset with reward and done signals, you can either write your own labeling script, or see a separate repo that I've made for this exact purpose of labeling  [lerobot-labeler](https://github.com/brysonjones/lerobot-labeler).
 
------ PLACEHOLDER FOR GIF OF LEROBOT-LABELER ----- 
+![LeRobot Labeler](docs/lerobot_labeler.gif)
 
 Whichever method you choose, the convention we are following for reward labels is the "step-penalty" strategy described in the π₀.₆* paper, where per-step rewards are defined as:
 
@@ -249,8 +249,6 @@ configs/
 ## Implementation Details
 
 - **Value Head**: The π₀.₆* paper does not detail the specific architecture of the value head, so we make the decision in this implementation to use an MLP with GELU activations to map the Gemma backbone's pooled hidden state to logits over the categorical value distribution bins. The depth of the MLP is configurable via `model.value_head_depth`. This architecture is very common when distilling rich hidden state information into outputs to use downstream.
-
------ PLACEHOLDER FOR METRIC SCREENSHOTS???? -----
 
 - **Training Metrics**: We monitor four metrics to understand value function performance:
   - **Loss** (cross-entropy): The primary training objective. Measures how well the predicted distribution over value bins matches the target bin.
