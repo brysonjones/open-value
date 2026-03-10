@@ -19,7 +19,7 @@ data:
 
 eval:
   checkpoint: outputs/open_value_estimator/train_run_3_7_26_ove_test_4/checkpoint_14800.safetensors
-  episodes: [220, 250, 260, 280, 300]
+  episodes: [265, 270, 280, 290]
   gpu: h100
   camera_views: [top, realsense]
   batch_size: 64

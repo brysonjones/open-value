@@ -46,12 +46,12 @@
     functionbox/.style={base, fill=functionorange},
     tokenframe/.style={
         draw=arrowblack, fill=learnedblue!35, rounded corners=10pt,
-        minimum width=4.9cm, minimum height=2.45cm,
+        minimum width=4.35cm, minimum height=2.25cm,
         line width=0.7pt
     },
     tokenpill/.style={
         draw=arrowblack!55, fill=learnedblue!20,
-        minimum width=0.44cm, minimum height=0.30cm,
+        minimum width=0.42cm, minimum height=0.30cm,
         line width=0.45pt, rounded corners=2.8pt
     },
     backbonebox/.style={base, fill=backbonepurple, minimum width=4cm, minimum height=1.4cm, font=\normalsize\bfseries},
@@ -87,13 +87,13 @@
 
     % --- Backbone and output ---
     \node[tokenframe]    (tokenframe) at (18, 3.75) {};
-    \foreach \dx in {-1.38, -0.92, -0.46, 0.00, 0.46, 0.92, 1.38} {
-        \node[tokenpill] at ($(tokenframe.center)+(\dx,-0.75)$) {};
+    \foreach \dx in {-1.79, -1.19, -0.60, 0.00, 0.60, 1.19, 1.79} {
+        \node[tokenpill] at ($(tokenframe.center)+(\dx,-0.70)$) {};
     }
-    \node[backbonebox]   (gemma)  at (18, 4.10)  {Gemma-3 270M};
-    \node[functionbox]   (pool)   at (22.5, 4.10){Pool\\Last Token};
-    \node[learnedbox]    (vhead)  at (26.5, 4.10){GELU MLP\\Value Head};
-    \node[outputbox, inner sep=5pt, minimum height=0cm, minimum width=0cm] (bins) at (30.5, 4.10)
+    \node[backbonebox]   (gemma)  at (18, 4.05)  {Gemma-3 270M};
+    \node[functionbox]   (pool)   at (22.5, 4.05){Pool\\Last Token};
+    \node[learnedbox]    (vhead)  at (26.5, 4.05){GELU MLP\\Value Head};
+    \node[outputbox, inner sep=5pt, minimum height=0cm, minimum width=0cm] (bins) at (30.5, 4.05)
         {\includegraphics[width=2cm]{distribution.png}\\[-4pt]{\tiny Monte Carlo Distribution}};
     \coordinate (visiontokenin) at ($(tokenframe.south)+(-0.95, 0)$);
     \coordinate (texttokenin) at ($(tokenframe.south)+(0.95, 0)$);
