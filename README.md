@@ -273,13 +273,23 @@ Calculates advantage values $A^\pi(\mathbf{o}_t, \mathbf{a}_t)$ from offline tra
 
 #### 1. Post-Training (N-Step Lookahead)
 
-* **Formula:** $$A^\pi(\mathbf{o}_t, \mathbf{a}_t) = \sum_{t'=t}^{t+N-1} r'_{t'} + V^\pi(\mathbf{o}_{t+N}) - V^\pi(\mathbf{o}_t)$$
+**Formula:**
+
+```math
+A^\pi(\mathbf{o}_t, \mathbf{a}_t) = \sum_{t'=t}^{t+N-1} r'_{t'} + V^\pi(\mathbf{o}_{t+N}) - V^\pi(\mathbf{o}_t)
+```
+
 * **Configuration:** $N = 50$
 * **Execution:** Sum rewards over the $N$-step window, add the future value $V^\pi(\mathbf{o}_{t+N})$, and subtract the current value $V^\pi(\mathbf{o}_t)$.
 
 #### 2. Pre-Training (Full Episode)
 
-* **Formula:** $$A^\pi(\mathbf{o}_t, \mathbf{a}_t) = \sum_{t'=t}^{T} r'_{t'} - V^\pi(\mathbf{o}_t)$$
+**Formula:**
+
+```math
+A^\pi(\mathbf{o}_t, \mathbf{a}_t) = \sum_{t'=t}^{T} r'_{t'} - V^\pi(\mathbf{o}_t)
+```
+
 * **Configuration:** $N = T$ (where $T$ is the terminal episode step)
 * **Execution:** Calculate the empirical return from step $t$ to the episode's end, then subtract the baseline $V^\pi(\mathbf{o}_t)$.
 
