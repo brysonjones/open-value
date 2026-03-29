@@ -22,8 +22,8 @@
 % =============================================================================
 % COLOR PALETTE
 % =============================================================================
-\definecolor{pretrainedgreen}{RGB}{120, 190, 120}   % Pretrained (frozen)
-\definecolor{learnedblue}{RGB}{130, 170, 220}        % Learned (trainable)
+\definecolor{pretrainedblue}{RGB}{170, 205, 235}     % Pretrained (frozen)
+\definecolor{learnedgreen}{RGB}{175, 215, 165}       % Learned (trainable)
 \definecolor{functionorange}{RGB}{245, 190, 130}     % Data manipulation (no params)
 \definecolor{inputgray}{RGB}{210, 210, 210}          % Inputs
 \definecolor{backbonepurple}{RGB}{180, 160, 210}     % Pretrained backbone (fine-tuned)
@@ -41,17 +41,12 @@
         line width=0.6pt, font=\small, rounded corners=2pt
     },
     inputbox/.style={base, fill=inputgray},
-    pretrainedbox/.style={base, fill=pretrainedgreen},
-    learnedbox/.style={base, fill=learnedblue},
+    pretrainedbox/.style={base, fill=pretrainedblue},
+    learnedbox/.style={base, fill=learnedgreen},
     functionbox/.style={base, fill=functionorange},
-    tokenframe/.style={
-        draw=arrowblack, fill=learnedblue!35, rounded corners=10pt,
-        minimum width=4.35cm, minimum height=2.25cm,
-        line width=0.7pt
-    },
     tokenpill/.style={
-        draw=arrowblack!55, fill=learnedblue!20,
-        minimum width=0.42cm, minimum height=0.30cm,
+        draw=arrowblack!55, fill=learnedgreen!20,
+        minimum width=0.46cm, minimum height=0.30cm,
         line width=0.45pt, rounded corners=2.8pt
     },
     backbonebox/.style={base, fill=backbonepurple, minimum width=4cm, minimum height=1.4cm, font=\normalsize\bfseries},
@@ -86,17 +81,19 @@
     \node[pretrainedbox] (gemtok) at (18.95, -3.1) {Gemma Tokenizer\\+ Embedding};
 
     % --- Backbone and output ---
-    \node[tokenframe]    (tokenframe) at (18, 3.75) {};
-    \foreach \dx in {-1.79, -1.19, -0.60, 0.00, 0.60, 1.19, 1.79} {
-        \node[tokenpill] at ($(tokenframe.center)+(\dx,-0.70)$) {};
+    \coordinate          (tokenstreamcenter) at (18, 3.75);
+    \node[inner sep=0pt, minimum width=4.00cm, minimum height=0.30cm]
+                         (tokenrow) at ($(tokenstreamcenter)+(0,-0.70)$) {};
+    \foreach \dx in {-1.77, -1.18, -0.59, 0.00, 0.59, 1.18, 1.77} {
+        \node[tokenpill] at ($(tokenrow.center)+(\dx,0)$) {};
     }
     \node[backbonebox]   (gemma)  at (18, 4.05)  {Gemma-3 270M};
     \node[functionbox]   (pool)   at (22.5, 4.05){Pool\\Last Token};
     \node[learnedbox]    (vhead)  at (26.5, 4.05){GELU MLP\\Value Head};
     \node[outputbox, inner sep=5pt, minimum height=0cm, minimum width=0cm] (bins) at (30.5, 4.05)
-        {\includegraphics[width=2cm]{distribution.png}\\[-4pt]{\tiny Monte Carlo Distribution}};
-    \coordinate (visiontokenin) at ($(tokenframe.south)+(-0.95, 0)$);
-    \coordinate (texttokenin) at ($(tokenframe.south)+(0.95, 0)$);
+        {\includegraphics[width=2cm]{distribution.png}\\[-1pt]{\scriptsize Value Estimate}\\[-4pt]{\fontsize{6}{7}\selectfont Monte Carlo Distribution}};
+    \coordinate (visiontokenin) at ($(tokenrow.center)+(-0.95, -0.40)$);
+    \coordinate (texttokenin) at ($(tokenrow.center)+(0.95, -0.40)$);
 
     % =========================================================================
     % EDGES
@@ -130,7 +127,7 @@
               fit=(disc)(format)(gemtok), inner sep=12pt,
               label={[grouplabel]above:"Task: pick up cup, State: 192 89 128 ...;"}] {};
         \node[draw=arrowblack!30, rounded corners=5pt, fill=groupgray!50,
-              fit=(tokenframe)(gemma)(pool)(vhead)(bins), inner sep=12pt,
+              fit=(tokenrow)(gemma)(pool)(vhead)(bins), inner sep=12pt,
               label={[grouplabel]above:Value Prediction}] {};
     \end{scope}
 
@@ -140,12 +137,12 @@
     \node[anchor=north west, font=\footnotesize\bfseries] (ltitle) at (21.8, -1.8) {Legend};
     \draw[arrowblack!40, line width=0.4pt] (ltitle.south west) -- ++(8.5, 0);
 
-    \node[fill=pretrainedgreen, draw=arrowblack, minimum width=0.5cm, minimum height=0.5cm,
+    \node[fill=pretrainedblue, draw=arrowblack, minimum width=0.5cm, minimum height=0.5cm,
           rounded corners=2pt, line width=0.4pt,
           anchor=north west] (l1) at ($(ltitle.south west) + (0, -0.3)$) {};
     \node[font=\scriptsize, right=0.2cm of l1] {Pretrained (frozen)};
 
-    \node[fill=learnedblue, draw=arrowblack, minimum width=0.5cm, minimum height=0.5cm,
+    \node[fill=learnedgreen, draw=arrowblack, minimum width=0.5cm, minimum height=0.5cm,
           rounded corners=2pt, line width=0.4pt, below=0.25cm of l1] (l2) {};
     \node[font=\scriptsize, right=0.2cm of l2] {Learned (trainable)};
 
