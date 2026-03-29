@@ -1,6 +1,10 @@
 # Open Value Estimator
 
-A standalone implementation of the value estimator architecture from Physical Intelligence's [π₀.₆*](https://www.physicalintelligence.company/blog/pi05) paper, built on SigLIP and Gemma. This model aligns predicted value with a normalized estimate of the number of steps until completion. It takes multi-view camera images and joint angles as input and outputs a distributional value prediction, rather than a scalar output, which has generally been found to produce more stable training.
+A standalone implementation of the value estimator architecture from Physical Intelligence's [π₀.₆*](https://www.physicalintelligence.company/blog/pi05) paper, built on SigLIP and Gemma. This model aligns predicted value with a normalized estimate of the number of steps until completion. 
+
+It takes multi-view camera images and joint angles as input and outputs a distributional value prediction that represents the value estimate of the current state.
+
+This value function can then be used downstream for RL and advantage conditioning of robot learning policies. 
 
 ![Value Function Rollout](docs/value_fcn_rollout.gif)
 
