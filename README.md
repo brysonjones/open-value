@@ -38,8 +38,6 @@ The model processes multi-camera images, joint angles, and a task description to
 
    Predicting a full distribution rather than a scalar has been found to produce more stable training.
    
-5. **EMA Weight Smoothing**: During training, Exponential Moving Average (EMA) maintains a slow-updating copy of the weights that filters the noise of stochastic optimization, so inference can use a more stable and typically better-generalizing model; see [Morales-Brotons et al. (2024)](https://arxiv.org/abs/2411.18704).
-
 ## Installation
 
 **Requirements:** Python 3.10+ and [uv](https://docs.astral.sh/uv/)
@@ -253,6 +251,8 @@ configs/
 ## Implementation Details
 
 - **Value Head**: The π₀.₆* paper does not detail the specific architecture of the value head, so we make the decision in this implementation to use an MLP with GELU activations to map the Gemma backbone's pooled hidden state to logits over the categorical value distribution bins. The depth of the MLP is configurable via `model.value_head_depth`. This architecture is very common when distilling rich hidden state information into outputs to use downstream.
+
+- **EMA Weight Smoothing**: During training, Exponential Moving Average (EMA) maintains a slow-updating copy of the weights that filters the noise of stochastic optimization, so inference can use a more stable and typically better-generalizing model; see [Morales-Brotons et al. (2024)](https://arxiv.org/abs/2411.18704).
 
 - **Training Metrics**: We monitor four metrics to understand value function performance:
   - **Loss** (cross-entropy): The primary training objective. Measures how well the predicted distribution over value bins matches the target bin.
