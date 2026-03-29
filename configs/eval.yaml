@@ -1,0 +1,29 @@
+# Minimal config for eval launches.
+#
+# Usage:
+#   uv run python src/open_value_estimator/cloud/cloud_eval.py \
+#     config=configs/eval.yaml
+#
+# Override any of these values at launch time with key=value arguments.
+
+cloud:
+  gcp:
+    project_id: adjoint-app
+    bucket: gs://adjoint_exp_usc1
+    mount_prefix: /gcs/adjoint_exp_usc1
+    region: us-central1
+    container: us-docker.pkg.dev/adjoint-app/experiment-images/representation-learning-research:v1
+
+data:
+  repo_id: full_ft_dataset_w_rewards_no_force
+
+eval:
+  checkpoint: outputs/open_value_estimator/train_run_3_7_26_ove_test_4/checkpoint_14800.safetensors
+  episodes: [265, 270, 280, 290]
+  gpu: h100
+  camera_views: [top, realsense]
+  batch_size: 64
+  use_ema: true
+  show_ground_truth_reward: false
+  video_fps: 30.0
+  output_dir: null

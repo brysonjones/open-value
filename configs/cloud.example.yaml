@@ -1,0 +1,10 @@
+# Deprecated: cloud settings now live under `cloud:` in the main config file.
+# Keep this file only as a reference for migrating old setups.
+
+# GCP Vertex AI settings
+gcp:
+  project_id: YOUR_GCP_PROJECT_ID
+  bucket: gs://YOUR_GCS_BUCKET
+  mount_prefix: /gcs/YOUR_GCS_BUCKET
+  region: us-central1
+  container: YOUR_CONTAINER_URI
